@@ -1,26 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="App">
+    <Message v-for="(message, idx) in messages" :key="idx" :msg="message" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Message from "./components/Message.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Message,
+  },
+  data() {
+    return {
+      messages: ["first", "second", "third"],
+    };
+  },
+  mounted() {
+    setInterval(() => {
+      fetch("http://localhost:8000")
+        .then((res) => res.text())
+        .then((text) => this.messages.push(text));
+    }, 1000);
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.App {
+  padding: 60px;
+  display: grid;
+  row-gap: 20px;
 }
 </style>
